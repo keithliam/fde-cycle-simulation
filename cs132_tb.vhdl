@@ -2,22 +2,22 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity SR_FF_tb is
-end entity SR_FF_tb;
+entity cs132_tb is
+end entity cs132_tb;
 
-architecture hehehe of SR_FF_tb is
+architecture hehehe of cs132_tb is
   -- test signals
   signal S, R, Q, QT : std_logic;
   
   -- attach unit under test (UUT)
-  component SR_FF is
+  component cs132_2 is
     port(S, R: in std_logic; Q, QT: inout std_logic);
-  end component SR_FF;
+  end component cs132_2;
  
 begin
   -- initialize an and2 unit 
   -- attach test signals to UUT
-  uut : SR_FF port map(S, R, Q, QT);
+  uut : cs132_2 port map(S, R, Q, QT);
   process
     -- initialize variables
     variable error_count : integer := 0;
