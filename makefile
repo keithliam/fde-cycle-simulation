@@ -1,5 +1,10 @@
 run:
-	ghdl-0.35-llvm-macosx/bin/ghdl -a *.vhdl
-	ghdl-0.35-llvm-macosx/bin/ghdl -e main_tb
-	ghdl-0.35-llvm-macosx/bin/ghdl -r main_tb --vcd=main_tb.vcd
-	open ./main_tb.vcd
+	ghdl-0.35-llvm-macosx/bin/ghdl -a --ieee=synopsys main.vhdl
+	ghdl-0.35-llvm-macosx/bin/ghdl -e --ieee=synopsys main
+	ghdl-0.35-llvm-macosx/bin/ghdl -r --ieee=synopsys main
+
+wave:
+	ghdl-0.35-llvm-macosx/bin/ghdl -a --ieee=synopsys *.vhdl
+	ghdl-0.35-llvm-macosx/bin/ghdl -e --ieee=synopsys main
+	ghdl-0.35-llvm-macosx/bin/ghdl -r --ieee=synopsys main --vcd=main.vcd
+	open ./main.vcd
