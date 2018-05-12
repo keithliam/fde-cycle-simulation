@@ -15,7 +15,7 @@
 	```
 * For MacOS
 	```
-		$ make run
+		$ make mac-run
 	```
 
 ## GHDL Installation
