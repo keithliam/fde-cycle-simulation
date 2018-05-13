@@ -22,20 +22,19 @@ architecture behav of main is
 begin
 	process
 	file f : text;
-	variable reg_values : values;
-	variable fdemw : values;
-	variable reg_time_left : values;
 	variable l : line;
 	variable i : integer := 0;
 	variable b : std_logic_vector(0 to 31);
-	variable stall_flag : std_logic;
+	variable stall_flag : std_logic := '0';
 	
+	variable reg_values : values;
+	variable fdemw : values;
+	variable reg_used_by : values;
+
 	variable instr : integer;
 	variable dst : integer;
 	variable src : integer;
 	variable tar : integer;
-
-	variable clock_cycle : unsigned(0 to 3);
 
 	begin
 		file_open(f, "./input.txt", read_mode);
@@ -51,32 +50,52 @@ begin
 		file_close(f);
 
 		--loops through instructions
-		i := 0;
-		while (i <= 14) loop
-			instr := to_integer(unsigned(t_mem(i)(0 to 2)));
-			dst := to_integer(signed(t_mem(i)(4 to 8)));
-			src := to_integer(signed(t_mem(i)(10 to 14)));
-			tar := to_integer(signed(t_mem(i)(16 to 20)));
-			report integer'image(dst);
-			if instr = 0 then -- if instruction is LOAD
-				if t_mem(i)(3) = '0' then -- the first bit determines if the arg is a register or an immediate value
-					report "Hello";
-					if registers(dst) = '0' then --checks if register is avaiable
-						report "World";
-						if t_mem(i)(9) = '0' then
-							if registers(src) = '0' then
+		i := 0; --line counter
+		while (i<=14) loop			
+			--fetch
+			fdemw(0) := i;
+			
+			--decode
+			fdemw(1) := fdemw(0) - 1;
+			instr := to_integer(unsigned(t_mem(fdemw(1))(0 to 2)));
+			dst := to_integer(signed(t_mem(fdemw(1))(4 to 8)));
+			src := to_integer(signed(t_mem(fdemw(1))(10 to 14)));
+			tar := to_integer(signed(t_mem(fdemw(1))(16 to 20)));
+			if t_mem(i)(3) = '0' then -- the first bit determines if the arg is a register or an immediate value
+				if registers(dst) = '0' then --checks if register is avaiable
+					if t_mem(i)(9) = '0' then
+						if registers(src) = '0' then
+							if (t_mem(i)(15) = '0'  & instr /= 0) then
+								if registers(tar) = '0' then
+									registers(dst) <= '1'; --set the register to unavailable
+									registers(src) <= '1'; --set the register to unavailable
+									registesr(tar) <= '1'; --set the register to unavailable
+								else
+									stall_flag := '1';
+								end if;
+							else
 								registers(dst) <= '1'; --set the register to unavailable
 								registers(src) <= '1'; --set the register to unavailable
 							end if;
-						else -- if second argument is an immediate value
-							registers(dst) <= '1'; --set the register to unavailable
-							reg_values(dst) := src;
-							report integer'image(src) & " = " & integer'image(reg_values(dst));
+						else
+							stall_flag := '1';
 						end if;
+					else -- if second argument is an immediate value
+						registers(dst) <= '1'; --set the register to unavailable
 					end if;
 				else
-					report "Load dstination must be a register.";
+					stall_flag := '1';
 				end if;
+			end if;
+
+			--execute
+			fdemw(2) := fdemw(1) - 1;
+			instr := to_integer(unsigned(t_mem(fdemw(2))(0 to 2)));
+			dst := to_integer(signed(t_mem(fdemw(2))(4 to 8)));
+			src := to_integer(signed(t_mem(fdemw(2))(10 to 14)));
+			tar := to_integer(signed(t_mem(fdemw(2))(16 to 20)));
+			if instr = 0 then -- if instruction is LOAD
+				
 			elsif instr = 1 then -- if instructions is ADD
 
 			elsif instr = 2 then -- if instruction is SUB
@@ -88,11 +107,28 @@ begin
 			elsif instr = 5 then -- if instruction is MOD
 
 			end if;
-			i := i + 1;
+
+			--memory
+
+			--writeback
+
+			--set and reset register flags
+			for j in 0 to 31 loop
+				if fdemw(0) = reg_used_by(j) OR fdemw(1) = reg_used_by(j) OR fdemw(2) = reg_used_by(j) OR fdemw(3) = reg_used_by(j) OR fdemw(4) = reg_used_by(j) then
+					registers(j) <= '1'; --set available
+				else
+					registers(j) <= '0'; --set unavailable
+				end if;
+			end loop;
+
+			if stall_flag = '1' then
+				i := i - 1;
+			end if;
+
+			program_counter <= std_logic_vector(unsigned(program_counter) + 1);
 			wait for 10 ns;
 		end loop;
 
-		
 		wait;
     end process;
 end behav;
