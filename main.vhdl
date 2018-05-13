@@ -45,6 +45,12 @@ begin
 		end loop;
 		file_close(f);
 
+		--initialize registers
+		i := 0;
+		while (i <= 31) loop
+			registers(i) <= '0';
+			i := i + 1;
+		end loop;
 		--loops through instructions
 		i := 0;
 		while (i <= 14) loop
