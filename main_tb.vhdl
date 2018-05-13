@@ -11,13 +11,14 @@ architecture behav of main_tb is
   
   -- attach unit under test (UUT)
   component main is
-    port(input1, input2: in std_logic; output1: out std_logic);
+    -- port(input1, input2: in std_logic; output1: out std_logic);
   end component main;
  
 begin
   -- initialize an and2 unit 
   -- attach test signals to UUT
-  uut : main port map(input1, input2, output1);
+  --uut : main port map(input1, input2, output1);
+  uut : main;
   process
     -- initialize variables
     variable error_count : integer := 0;
