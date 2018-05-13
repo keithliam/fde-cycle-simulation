@@ -95,6 +95,7 @@ begin
 
 			end if;
 			i := i + 1;
+			program_counter <= std_logic_vector(unsigned(program_counter) + 1);
 			wait for 10 ns;
 		end loop;
 
