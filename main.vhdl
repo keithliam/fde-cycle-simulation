@@ -60,7 +60,7 @@ begin
 			stages(0) <= '1';
 			
 			--decode
-			if fdemw(0) /= 0 & stall_flag = '0' then
+			if (fdemw(0) /= 0 & stall_flag = '0') then
 				fdemw(1) := fdemw(0) - 1;
 				stages(1) <= '1';
 				instr := to_integer(unsigned(t_mem(fdemw(1))(0 to 2)));
