@@ -52,6 +52,12 @@ begin
 		end loop;
 		file_close(f);
 
+		--initialize registers
+		i := 0;
+		while (i <= 31) loop
+			registers(i) <= '0';
+			i := i + 1;
+		end loop;
 		--loops through instructions
 		i := 0; --line counter
 		while (i<=line_count) loop			
@@ -136,6 +142,7 @@ begin
 				i := i - 1;
 			end if;
 
+			i := i + 1;
 			program_counter <= std_logic_vector(unsigned(program_counter) + 1);
 			wait for 5 ns;
 		end loop;
