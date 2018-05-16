@@ -9,9 +9,9 @@
 * For Windows
 	Using the Command Prompt, enter the following:
 	```console
-	ghdl -a --ieee=synopsys main.vhdl
-	ghdl -e --ieee=synopsys main
-	ghdl -r --ieee=synopsys main
+	$ ghdl -a --ieee=synopsys main.vhdl
+	$ ghdl -e --ieee=synopsys main
+	$ ghdl -r --ieee=synopsys main
 	```
 * For MacOS
 	```console
