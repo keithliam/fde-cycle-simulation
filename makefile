@@ -7,7 +7,7 @@ wave:
 	ghdl -a --ieee=synopsys *.vhdl
 	ghdl -e --ieee=synopsys main
 	ghdl -r --ieee=synopsys main --vcd=main.vcd
-	open ./main.vcd
+	gtkwave ./main.vcd
 
 mac-run:
 	ghdl-0.35-llvm-macosx/bin/ghdl -a --ieee=synopsys main.vhdl
