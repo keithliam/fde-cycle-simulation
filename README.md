@@ -3,20 +3,20 @@
 ## How to run
 
 * For Ubuntu
-```
-$ make run
-```
+	```console
+	$ make run
+	```
 * For Windows
 	Using the Command Prompt, enter the following:
-```
-ghdl -a --ieee=synopsys main.vhdl
-ghdl -e --ieee=synopsys main
-ghdl -r --ieee=synopsys main
-```
+	```console
+	ghdl -a --ieee=synopsys main.vhdl
+	ghdl -e --ieee=synopsys main
+	ghdl -r --ieee=synopsys main
+	```
 * For MacOS
-```
-$ make mac-run
-```
+	```console
+	$ make mac-run
+	```
 
 ## GHDL Installation
 
